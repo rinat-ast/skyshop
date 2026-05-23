@@ -24,7 +24,8 @@ public class StorageService {
         UUID productId1 = UUID.randomUUID();
         productsMap.put(productId1, new SimpleProduct("Папа может ", 320, productId1));
         UUID productId2 = UUID.randomUUID();
-        productsMap.put(productId2, new SimpleProduct("Булка столичная ", 32, productId2));
+        SimpleProduct papa = new SimpleProduct("Булка столичная ", 32, productId2);
+        productsMap.put(papa.getId(),papa);
 
 
         UUID articleId = UUID.randomUUID();
@@ -49,6 +50,15 @@ public class StorageService {
     public Collection<Article> getAllArticles() {
         return articlesMap.values();
     }
+    public Optional<Product> getProductById(UUID id) {
+        return Optional.ofNullable(productsMap.get(id));
+    }
 
-
+    @Override
+    public String toString() {
+        return "StorageService{" +
+                "productsMap=" + productsMap +
+                ", articlesMap=" + articlesMap +
+                '}';
+    }
 }
