@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class BasketService {
-    private final ProductBasket basket;
+    private final ProductBasket productBasket;
     private final StorageService storageService;
 
     public BasketService(ProductBasket basket,StorageService storageService) {
-        this.basket = basket;
+        this.productBasket = basket;
         this.storageService = storageService;
     }
 
@@ -26,7 +26,7 @@ public class BasketService {
         }
         Product product = storageService.getProductById(id)
                 .orElseThrow(NoSuchProductException::new);
-        basket.addToBasket(product.getId());
+        productBasket.addToBasket(product.getId());
     }
 
 //    Внутри метода getUserBasket вам нужно:
@@ -35,7 +35,7 @@ public class BasketService {
 //    В этом вам снова поможет StreamAPI и StorageSerivce.
 
     public UserBasket getUserBasket() {
-        List <BasketItem> basketItems = basket.getProductBasket().entrySet().stream()
+        List <BasketItem> basketItems = productBasket.getProductBasket().entrySet().stream()
                 .map(entry -> new BasketItem(
                         storageService.getProductById(entry.getKey())
                                 .orElseThrow(()->new NoSuchProductException("Product not found: " + entry.getKey())),
