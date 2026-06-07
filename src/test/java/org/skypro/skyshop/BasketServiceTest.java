@@ -1,6 +1,10 @@
 package org.skypro.skyshop;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.skypro.skyshop.model.basket.ProductBasket;
 import org.skypro.skyshop.model.basketItem.BasketItem;
 import org.skypro.skyshop.model.exception.NoSuchProductException;
@@ -14,18 +18,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.*;
-
+@ExtendWith(MockitoExtension.class)
 public class BasketServiceTest {
+    @InjectMocks
     private BasketService basketService;
+    @Mock
     private ProductBasket mockProductBasket;
+    @Mock
     private StorageService mockStorageService;
 
-    @BeforeEach
-    void setUp() {
-        mockProductBasket = mock(ProductBasket.class);
-        mockStorageService = mock(StorageService.class);
-        basketService = new BasketService(mockProductBasket, mockStorageService);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        mockProductBasket = mock(ProductBasket.class);
+//        mockStorageService = mock(StorageService.class);
+//        basketService = new BasketService(mockProductBasket, mockStorageService);
+
     /**
      * Сценарий 1: Добавление несуществующего товара в корзину приводит к выбросу исключения
      */
@@ -84,25 +91,6 @@ public class BasketServiceTest {
      */
     @Test
     void getUserBasket_WhenBasketHasProducts_ShouldReturnCorrectMap() {
-        // Arrange: создаём тестовые данные для корзины
-//        UUID productId1 = UUID.randomUUID();
-//        UUID productId2 = UUID.randomUUID();
-//
-//        Map<UUID, Integer> basketContents = new HashMap<>();
-//        basketContents.put(productId1, 2); // 2 единицы товара 1
-//        basketContents.put(productId2, 1); // 1 единица товара 2
-//
-//        when(mockProductBasket.getProductBasket()).thenReturn(basketContents);
-//
-//        // Act
-//        Map<UUID, Integer> result = basketService.getUserBasket();
-//
-//        // Assert
-//        assertNotNull(result);
-//        assertEquals(2, result.size());
-//        assertEquals(Integer.valueOf(2), result.get(productId1));
-//        assertEquals(Integer.valueOf(1), result.get(productId2));
-//        verify(mockProductBasket, times(1)).getProductBasket();
         UUID productId1 = UUID.randomUUID();
         UUID productId2 = UUID.randomUUID();
         Product product1 = new SimpleProduct("Товар 1", 1000, productId1);

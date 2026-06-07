@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.skypro.skyshop.model.search.Searchable;
@@ -18,18 +19,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class SearchServiceTest {
+    @InjectMocks
     private SearchService searchService;
+    @Mock
     private StorageService mockSt;
 
-
-
-    @BeforeEach
-    void setUp() {
-        mockSt = mock(StorageService.class);
-        searchService = new SearchService(mockSt);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        mockSt = mock(StorageService.class);
+//        searchService = new SearchService(mockSt);
+//    }
     /**
      * Сценарий 1: Поиск в случае отсутствия объектов в StorageService.
      */
@@ -92,19 +93,19 @@ public class SearchServiceTest {
 
         // Мокируем преобразование Searchable → SearchResult
         SearchResult expectedResult = mock(SearchResult.class);
-        when(SearchResult.fromSearchable(matchingSearchable)).thenReturn(expectedResult);
 
-        //вызов метода с неполным текстом поиска
-        List<SearchResult> result = searchService.search("Ноу");
-
-        // Assert
-        assertNotNull(result, "Результат не должен быть null");
-        assertEquals(1, result.size(), "Должен быть возвращён ровно один элемент");
-        assertEquals(expectedResult, result.get(0), "Элемент в результате должен соответствовать ожидаемому");
-
-
-
-
+        try (MockedStatic<SearchResult> mockedStatic = mockStatic(SearchResult.class)) {
+            // Настраиваем поведение статического метода
+            mockedStatic.when(() -> SearchResult.fromSearchable(matchingSearchable))
+                    .thenReturn(expectedResult);
+            //вызов метода с неполным текстом поиска
+            List<SearchResult> result = searchService.search("Ноу");
+//        when(SearchResult.fromSearchable(matchingSearchable)).thenReturn(expectedResult);
+            // Assert
+            assertNotNull(result, "Результат не должен быть null");
+            assertEquals(1, result.size(), "Должен быть возвращён ровно один элемент");
+            assertEquals(expectedResult, result.get(0), "Элемент в результате должен соответствовать ожидаемому");
+        }
     }
 }
 
