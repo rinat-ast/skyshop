@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Несколько кнопок</title>
+    <style>
+        /* Стили для кнопок внутри форм */
+        button {
+            padding: 10px 25px; /* Отступы внутри кнопки */
+            font-size: 16px; /* Размер текста */
+            background-color: #4CAF50; /* Зелёный фон */
+            color: white; /* Белый текст */
+            border: none; /* Убираем рамку */
+            border-radius: 8px; /* Скруглённые углы */
+            cursor: pointer; /* Курсор-указатель */
+            margin: 10px; /* Отступы между кнопками */
+            transition: background-color 0.3s; /* Плавный переход цвета */
+        }
+
+        /* Эффект при наведении */
+        button:hover {
+            background-color: #45a049; /* Темнее при наведении */
+        }
+        .top-right-button {
+         position: absolute;
+         top: 0px;    /* Отступ сверху */
+         right: 20px;  /* Отступ справа */
+         z-index: 100; /* Поверх других элементов, если нужно */
+
+         }
+    </style>
+</head>
+
+<body>
+<form action="http://localhost:8080/products" target="_blank" >
+    <button type="submit">Товары</button>
+</form>
+
+<form action="http://localhost:8080/articles" target="_blank" >
+    <button type="submit">Статьи</button>
+</form>
+
+<form action="http://localhost:8080/basket" target="_blank" rel="noopener noreferrer" class="top-right-button">
+    <button type="submit" style="width: 180px; height: 50px; font-size: 18px;">Ваша корзина</button>
+</form>
+</body>
+</html>
